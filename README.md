@@ -1,0 +1,273 @@
+# 🇮🇳 india-faker
+
+> Realistic Indian test data generator for developers.
+
+[![npm version](https://img.shields.io/npm/v/india-faker.svg)](https://www.npmjs.com/package/india-faker)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+Most fake data libraries generate Western-style data that doesn't match Indian formats — wrong names, wrong phone patterns, no UPI, no IFSC. **india-faker** fixes that.
+
+---
+
+## 🚀 Quick Start
+
+```bash
+npm install india-faker
+```
+
+```js
+import { person, student, order } from "india-faker";
+
+console.log(person());
+// { name: 'Aarav Sharma', gender: 'male', phone: '+91 9876543210', email: 'aarav.sharma@gmail.com', region: 'north' }
+
+console.log(student());
+// { name: 'Priya Patil', rollNo: 'TYCS102', college: 'Pune University', percentage: 78.4, cgpa: 8.25, ... }
+
+console.log(order());
+// { orderId: 'ORD1234567890', product: 'Bluetooth Earbuds', price: 1499, payment: 'UPI', status: 'Delivered', ... }
+```
+
+---
+
+## ✨ Features
+
+- **Regional names** — North, South, West, East Indian names with matching surnames
+- **Indian phone numbers** — `+91 9XXXXXXXXX` format
+- **Realistic addresses** — 15 states, 150+ cities, correct PIN codes
+- **UPI IDs** — all major handles (`@ybl`, `@okaxis`, `@paytm`, etc.)
+- **Aadhaar-like IDs** — fake 12-digit format, intentionally NOT real
+- **PAN-like IDs** — fake 10-char format
+- **IFSC codes** — 15 major banks with correct prefixes
+- **Student profiles** — roll numbers, colleges, CGPA
+- **E-commerce data** — orders, products, Indian payment methods
+- **Bulk generation** — generate any number of records
+- **Seed support** — reproducible data for consistent tests
+
+---
+
+## 📖 API Reference
+
+### `person(options?)`
+
+Generate an Indian person profile.
+
+```js
+import { person } from "india-faker";
+
+person();
+// { name, gender, phone, email, region }
+
+person({ gender: "female" });
+person({ region: "south" });
+person({ gender: "male", region: "west" });
+```
+
+Options: `gender` (`"male"` | `"female"`), `region` (`"north"` | `"south"` | `"west"` | `"east"`)
+
+---
+
+### `phone()`
+
+```js
+import { phone } from "india-faker";
+phone(); // "+91 8765432109"
+```
+
+---
+
+### `email(name?)`
+
+```js
+import { email } from "india-faker";
+email(); // "rahul.sharma@gmail.com"
+email("Priya Patel"); // "priya.patel@yahoo.co.in"
+```
+
+---
+
+### `address(options?)`
+
+```js
+import { address } from "india-faker";
+
+address();
+// { addressLine: "Flat 302, Shree Residency", city: "Pune", state: "Maharashtra", pincode: "411038" }
+
+address({ region: "south" });
+address({ state: "Gujarat" });
+```
+
+Also exports: `city()`, `stateName()`, `cityState()`, `pincode(state?)`
+
+---
+
+### `aadhaar()`
+
+> ⚠️ Fake data only. Does NOT pass Verhoeff checksum. Cannot be used as a real Aadhaar number.
+
+```js
+import { aadhaar } from "india-faker";
+aadhaar(); // "4821 7643 9210"
+```
+
+---
+
+### `pan()`
+
+> ⚠️ Fake data only. Not a real PAN number.
+
+```js
+import { pan } from "india-faker";
+pan(); // "ABCDE1234F"
+```
+
+---
+
+### `upi(name?)`
+
+```js
+import { upi } from "india-faker";
+upi(); // "rahul.verma@ybl"
+upi("Neha Gupta"); // "neha.gupta@okaxis"
+```
+
+---
+
+### `student(options?)`
+
+```js
+import { student } from "india-faker";
+
+student();
+// {
+//   name: "Priya Patil",
+//   gender: "female",
+//   rollNo: "TYCS102",
+//   course: "BE",
+//   branch: "Computer Science",
+//   college: "Pune University",
+//   year: "Year 3",
+//   percentage: 78.4,
+//   cgpa: 8.25
+// }
+```
+
+---
+
+### `order()`
+
+```js
+import { order } from "india-faker";
+
+order();
+// {
+//   orderId: "ORD1234567890",
+//   product: "Bluetooth Earbuds",
+//   quantity: 1,
+//   price: 1499,
+//   totalAmount: 1499,
+//   payment: "UPI",
+//   status: "Delivered"
+// }
+```
+
+---
+
+### `product()`
+
+```js
+import { product } from "india-faker";
+
+product();
+// {
+//   sku: "SKU12345678",
+//   name: "Smartwatch",
+//   price: 3499,
+//   mrp: 4999,
+//   discount: "30%",
+//   inStock: true,
+//   rating: 4.2,
+//   reviews: 1234
+// }
+```
+
+---
+
+### `bank()`
+
+```js
+import { bank } from "india-faker";
+
+bank();
+// {
+//   bankName: "State Bank of India",
+//   accountNumber: "XXXXXXX1234",
+//   ifsc: "SBIN0012345",
+//   accountType: "Savings",
+//   branch: "Main Branch"
+// }
+```
+
+Also exports: `ifsc(bankName?)`
+
+---
+
+### `generate(type, count, options?)`
+
+Bulk generate any type of record.
+
+```js
+import { generate } from "india-faker";
+
+generate("person", 100);
+generate("student", 50, { region: "south" });
+generate("order", 200);
+```
+
+Available types: `person`, `phone`, `email`, `address`, `city`, `state`, `pincode`, `student`, `order`, `product`, `bank`, `ifsc`, `aadhaar`, `pan`, `upi`
+
+---
+
+### `setSeed(number)` / `clearSeed()`
+
+Reproducible data for snapshot tests or demos.
+
+```js
+import { setSeed, clearSeed, person } from "india-faker";
+
+setSeed(123);
+person(); // always returns the same result with seed 123
+person(); // different, but reproducible
+
+clearSeed(); // back to random
+```
+
+---
+
+## ⚠️ Disclaimer
+
+All data generated by this package is **completely fake** and intended for **development and testing purposes only**.
+
+- Aadhaar-like numbers do NOT pass real validation checks
+- PAN-like codes do NOT represent real taxpayers
+- No real person's data is used or generated
+- Do NOT use generated data for fraud, identity impersonation, or any illegal activity
+
+---
+
+## 🤝 Contributing
+
+Pull requests welcome! Areas to contribute:
+
+- More regional data (Northeast India, Lakshadweep, etc.)
+- More colleges, banks, products
+- CLI tool support
+- TypeScript types
+- Regional language transliteration
+
+---
+
+## 📄 License
+
+MIT © india-faker contributors
